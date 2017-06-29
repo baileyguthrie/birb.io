@@ -1,22 +1,15 @@
 from django.shortcuts import render
 import twitter
-import json
+from keys import *
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # Create your views here.
 def index(request):
     
-    with open("config.json", "r") as f:
-        config = json.load(f)
-        CONSUMER_KEY = config["ConsumerKey"]
-        CONSUMER_SECRET = config["ConsumerSecret"]
-        ACCESS_TOKEN_KEY = config["AccessTokenKey"]
-        ACCESS_TOKEN_SECRET = config["AccessTokenSecret"]
-    
-    api = twitter.Api(consumer_key = CONSUMER_KEY,
-                  consumer_secret = CONSUMER_SECRET,
-                  access_token_key = ACCESS_TOKEN_KEY,
-                  access_token_secret = ACCESS_TOKEN_SECRET)
+    api = twitter.Api(consumer_key = ConsumerKey,
+                  consumer_secret = ConsumerSecret,
+                  access_token_key = AccessTokenKey,
+                  access_token_secret = AccessTokenSecret)
     
     #if not request.__contains__("search_box"):
     #    return render(request, 'index.html')
