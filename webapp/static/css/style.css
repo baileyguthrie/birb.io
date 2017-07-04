@@ -1,0 +1,59 @@
+body {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    background: #9be7ff;
+}
+
+body {
+    margin-bottom: 60px
+}
+
+nav.navbar-default {
+    margin-bottom: 0px;
+    border: none;
+    background: #2286c3;
+}
+
+.container-fluid {
+    background: #9be7ff;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 60%;
+    height: 30px;
+    background-color: #78909c;
+    left: 50%;
+    transform: translate(-50%, 0);
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.slide-up
+{
+    bottom: 0px !important;
+}
+
+.slide-down
+{
+    bottom: -475px !important;
+}
+
+.navbar-default .navbar-brand {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+}
+
+.navbar-default .navbar-nav li a {
+    color: white;
+}
+
+.navbar-text {
+    color: white;
+}

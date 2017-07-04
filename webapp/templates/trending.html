@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}
+    {{ block.super }} - Trending
+{% endblock title %}
+{% block content %}
+    
+    {% if trends %}
+        {% for trend in trends %}
+            <a href="{{ trend.url }}">{{ trend.name }}</a>
+            {% if 'tweet_volume' in trend %}
+                <h4>{{ trend.tweet_volume | intcomma }}</h4>
+            {% else %}
+                <h4>< 10,000</h4>
+            {% endif %}
+            {% if 'error' in trend %}
+                <p>{{ trend.error }}</p>
+            {% else %}
+                <p>{{ trend.statement }}</p>
+                <p>{{ trend.analysis }}</p>
+            {% endif %}
+            <hr>
+        {% empty %}
+            <p>Sorry, no data was able to be found.</p>
+        {% endfor %}
+    {% endif %}
+
+{% endblock content %}

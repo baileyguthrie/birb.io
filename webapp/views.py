@@ -1,60 +1,93 @@
 from django.shortcuts import render
-import twitter
 from keys import *
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import twitter
+from functions import *
+
+#from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # Create your views here.
 def index(request):
-    
     api = twitter.Api(consumer_key = ConsumerKey,
                   consumer_secret = ConsumerSecret,
                   access_token_key = AccessTokenKey,
                   access_token_secret = AccessTokenSecret)
-    
-    #if not request.__contains__("search_box"):
-    #    return render(request, 'index.html')
     
     try:
         query=request.GET.__getitem__("query")
     except KeyError:
         return render(request, 'index.html')
     
-    neg, neu, pos, count = 0, 0, 0, 0
-    number_of_searches = 100
-    search_results = api.GetSearch(term = query, count=number_of_searches)
-    analyzer = SentimentIntensityAnalyzer()
-    for s in search_results:
-        vs = analyzer.polarity_scores(s.text)
-        neg += vs['neg']
-        neu += vs['neu']
-        pos += vs['pos']
-        count += 1
+    user_searched_for = False
+    number_of_searches = 200
+    
+    if str(query)[0] == '@': # search for user
+        user_searched_for = True
+        try:
+            user_timeline = api.GetUserTimeline(screen_name = query, count = number_of_searches)
+        except twitter.error.TwitterError as e:
+            error = str(e)
+            return render(request, 'index.html', { 'error': error })
+        user_results = analyze_tweets(user_timeline)
+        if 'error' in user_results:
+            return render(request, 'index.html', {'error': user_results['error'] })
 
-    neg /= count
-    neu /= count
-    pos /= count
+    try:
+        search_results = api.GetSearch(term = query, count = number_of_searches)
+    except twitter.error.TwitterError as e:
+        error = str(e)
+        return render(request, 'index.html', { 'error': error })
+    results = analyze_tweets(search_results)
+    if 'error' in results:
+        return render(request, 'index.html', { 'error': results['error'] })
     
-    if neg == 0:
-        statement = "Maximum positivity!"
-        analysis = "There was no detected negativity!"
-    elif pos == 0:
-        statement = "Maximum negativity..."
-        analysis = "There was no detected positivity..."
-    elif pos > neg:
-        ratio = pos / neg
-        statement = "Positive! :)"
-        analysis = "The ratio of positivity to negativity is {}".format(ratio)
-    elif neg > pos:
-        ratio = neg / pos
-        statement = "Negative... :("
-        analysis = "The ratio of negativity to positivity is {}".format(ratio)
+    if user_searched_for:
+        return render(request, 'index.html', {
+            'query': query,
+            'statement': results['statement'],
+            'user_statement': user_results['statement'],
+            'analysis': results['analysis'],
+            'user_analysis': user_results['analysis'],
+            'count': results['count'],
+            'user_count': user_results['count']
+        })
     else:
-        statement = "This is a neutral subject!"
-        analysis = ""
+        return render(request, 'index.html', {
+            'query': query,
+            'statement': results['statement'],
+            'analysis': results['analysis'],
+            'count': results['count']
+        })
     
-    return render(request, 'index.html', {
-        'query': query,
-        'statement': statement,
-        'analysis': analysis
-    })
+def trending(request):
+    api = twitter.Api(consumer_key = ConsumerKey,
+                  consumer_secret = ConsumerSecret,
+                  access_token_key = AccessTokenKey,
+                  access_token_secret = AccessTokenSecret)
+
+    number_of_searches = 200
+    
+    trends = api.GetTrendsCurrent()
+    trends[:] = [x for x in trends if isEnglish(x.AsDict()['name'])] # Removes non english trends
+    
+    for i in range(len(trends)): # Leaves only name, url, and tweet_volume in trends
+        trends[i] = trends[i].AsDict()
+        trends[i].pop('timestamp', None)
+        trends[i].pop('query', None)
+        
+    for trend in trends:
+        try:
+            search_results = api.GetSearch(term = trend['name'], count = number_of_searches)
+        except twitter.error.TwitterError as e:
+            error = str(e)
+            return render(request, 'trending.html', { 'error': error })
+        
+        results = analyze_tweets(search_results)
+        if 'error' in results:
+            return render(request, 'index.html', {'error': results['error'] })
+        trend.update({'statement': results['statement'], 'analysis': results['analysis'], 'count': results['count']})
+        
+    return render(request, 'trending.html', { 'trends': trends })
+    
+def compare(request):
+    return render(request, 'compare.html')
     
