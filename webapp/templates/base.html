@@ -33,9 +33,9 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="main-nav-collapse">
               <ul class="nav navbar-nav navbar-right">
-                <li><a href="{% url 'home' %}" class="navbar-text">search</a></li>
-                <li><a href="{% url 'compare' %}" class="navbar-text">compare</a></li>
-                <li><a href="{% url 'trending' %}" class="navbar-text">trending</a></li>
+                <li><a href="{% url 'home' %}" class="navbar-text" id="search">search</a></li>
+                <li><a href="{% url 'compare' %}" class="navbar-text" id="compare">compare</a></li>
+                <li><a href="{% url 'trending' %}" class="navbar-text" id="trending">trending</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
           </div>
@@ -43,10 +43,31 @@
         <div class="container-fluid">
           {% block content %}{% endblock content %}
         </div>
-        <footer class="footer">
-            <p class="text-center">Made using VADER Sentiment Analysis</p>
-            <p class="text-center">0.0.3</p></p>
+        <footer>
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    click for more info
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <p>Search allows you to search for any phrase, hashtag, or user</p>
+                  <p>Compare allows you to simultaneously search for any of the above
+                  in order to compare them</p>
+                  <p>Trending anaylzes all of the current top trends, but takes
+                  a while to load</p>
+                  <p>Emotional analysis is done using Vader Sentiment Analyzer</p>
+                  <p>v0.1</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </footer>
+
         <script src="{% static 'js/script.js' %}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </body>

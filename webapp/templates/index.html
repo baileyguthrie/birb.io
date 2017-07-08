@@ -3,19 +3,29 @@
     {{ block.super }} - Search
 {% endblock title %}
 {% block content %}
-
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <h1>Hello World!</h1>
+    
+    {% if not query %}
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <p class="description-text">Welcome to Birb.io! Use the search bar below to find out how Twitter
+                feels about a certain phrase or hashtag. You can even search for a user
+                by searching for a user by putting an @ at the front and see how positively
+                or negatively they tweet!</p>
+            </div>
         </div>
-    </div>
+    {% else %}
+     <br><br>
+    {% endif %}
     {% include '_search.html' %}
-    <div class="row">
+    <br><br>
+    <div class="row results-group">
         <div class="col-md-8 col-md-offset-2">
             {% if query %}
-                <p>Searched for: {{ query }}</p>
-                <h3>{{ statement }}</h3>
-                <h4>{{ analysis }}</h4>
+                <div class="results-well">
+                    <p>Searched for: {{ query }}</p>
+                    <h3 class="results-statement">{{ statement }}</h3>
+                    <h4 class="results-analysis">{{ analysis }}</h4>
+                </div>
             {% endif %}
         </div>
     </div>
