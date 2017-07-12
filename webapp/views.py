@@ -89,5 +89,31 @@ def trending(request):
     return render(request, 'trending.html', { 'trends': trends })
     
 def compare(request):
-    return render(request, 'compare.html')
+    api = twitter.Api(consumer_key = ConsumerKey,
+                  consumer_secret = ConsumerSecret,
+                  access_token_key = AccessTokenKey,
+                  access_token_secret = AccessTokenSecret)
     
+    number_of_searches = 200
+    
+    comparison_results = []     
+    try:
+        query=request.GET.getlist("query")
+    except KeyError:
+        return render(request, 'compare.html')
+    
+    for search_term in query:
+        try:
+            search_results = api.GetSearch(term = search_term, count = number_of_searches)
+        except twitter.error.TwitterError as e:
+            error = str(e)
+            return render(request, 'compare.html', { 'error': error })
+        results = analyze_tweets(search_results)
+        if 'error' in results:
+            return render(request, 'compare.html', { 'error': results['error'] })
+        comparison_results.append({'name': search_term, 'statement': results['statement'], 'analysis': results['analysis'], 'count': results['count']})
+    
+    return render(request, 'compare.html', {'results': comparison_results})
+    
+def info(request):
+    return render(request, 'info.html')

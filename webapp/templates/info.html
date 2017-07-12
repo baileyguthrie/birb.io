@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ block.super }} - Info
+{% endblock title %}
+{% block content %}
+    
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="results-well">
+                <p>This is not meant to be a comprehensive anaylsis of Twitter's
+                   emotions about a topic, this is merely an analysis of the tweets
+                   that result from a quick search of a given phrase</p>
+                <p>Uses <a href="https://github.com/cjhutto/vaderSentiment">VADER Sentiment Analyzer</a> 
+                   for text analysis</p>
+                <p>Uses icons from <a href="https://feathericons.com/">Feather</a></p>
+                <p>Colors selected with help of <a href="https://material.io/">material.io</a></p>
+                <p>Made by Bailey Guthrie</p>
+                <p>v0.0.2</p>
+            </div>
+        </div>
+    </div>
+    
+    
+{% endblock content %}

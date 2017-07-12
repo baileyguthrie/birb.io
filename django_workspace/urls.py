@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^$', views.index, name='home'),
     url(r'^trending$', views.trending, name='trending'),
     url(r'^compare$', views.compare, name='compare'),
+    url(r'^info$', views.info, name='info'),
     url(r'^admin/', admin.site.urls),
 ]

@@ -8,11 +8,14 @@
     {% if trends %}
         {% for trend in trends %}
             <a href="{{ trend.url }}">{{ trend.name }}</a>
-            {% if 'tweet_volume' in trend %}
-                <h4>{{ trend.tweet_volume | intcomma }}</h4>
-            {% else %}
-                <h4>< 10,000</h4>
-            {% endif %}
+            <h4>
+                {% if 'tweet_volume' in trend %}
+                    {{ trend.tweet_volume | intcomma }}
+                {% else %}
+                    < 10,000
+                {% endif %}
+                 tweets in last 24 hours
+            </h4>
             {% if 'error' in trend %}
                 <p>{{ trend.error }}</p>
             {% else %}

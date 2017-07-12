@@ -1,0 +1,19 @@
+* SEARCH
+Show most positive and most negative tweets
+Divide user search into user and user mention sides
+
+* COMPARE
+Have compare screen show warning when 4 or more terms being compared
+Show animated bar graph comparing the scores of the terms
+
+* TRENDING
+Have results load 5 at a time, with additional loading through AJAX request with query string parameters
+Cache unsearched results either through hidden text fields
+
+* ETC
+Night mode that remembers user preference either through HTML5 local storage or cookies
+Create twtitter bot that responds to peoples tweet requests for analyzation
+
+
+* BUGS
+Padding on bottom of compare page

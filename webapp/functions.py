@@ -21,10 +21,10 @@ def analyze_tweets(tweet_list):
     analysis = ""
     # Assign an analysis and statement
     if neg == 0:
-        statement += "Maximum positivity!"
+        statement += "Maximum Positivity!"
         analysis += "There was no detected negativity!"
     elif pos == 0:
-        statement += "Maximum negativity..."
+        statement += "Maximum Negativity..."
         analysis += "There was no detected positivity..."
     elif pos > neg:
         ratio = pos / neg

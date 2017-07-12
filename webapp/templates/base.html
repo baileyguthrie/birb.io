@@ -15,60 +15,30 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/twitter.ico' %}" />
         {% block header %}{% endblock header%}
     </head>
     <body>
-        <nav class="navbar navbar-default navbar-static-top" role="navigation">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav-collapse" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a href="{% url 'home' %}" class="navbar-brand navbar-text">Birb.io</a>
-            </div>
-        
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="main-nav-collapse">
-              <ul class="nav navbar-nav navbar-right">
-                <li><a href="{% url 'home' %}" class="navbar-text" id="search">search</a></li>
-                <li><a href="{% url 'compare' %}" class="navbar-text" id="compare">compare</a></li>
-                <li><a href="{% url 'trending' %}" class="navbar-text" id="trending">trending</a></li>
-              </ul>
-            </div><!-- /.navbar-collapse -->
-          </div>
-        </nav>
-        <div class="container-fluid">
-          {% block content %}{% endblock content %}
+        <div class="title-wrapper">
+            <a id="title" href="{% url 'home' %}">Birb.io</a>
         </div>
-        <footer>
-          <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                    click for more info
-                  </a>
-                </h4>
-              </div>
-              <div id="collapseOne" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <p>Search allows you to search for any phrase, hashtag, or user</p>
-                  <p>Compare allows you to simultaneously search for any of the above
-                  in order to compare them</p>
-                  <p>Trending anaylzes all of the current top trends, but takes
-                  a while to load</p>
-                  <p>Emotional analysis is done using Vader Sentiment Analyzer</p>
-                  <p>v0.1</p>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="navigator">
+                        <a class="navigator-link" id="search" href="{% url 'home' %}">search</a>
+                        <a class="navigator-link" id="compare" href="{% url 'compare' %}">compare</a>
+                        <a class="navigator-link" id="trending" href="{% url 'trending' %}">trending</a>
+                        <a class="navigator-link" id="info" href="{% url 'info' %}">info</a>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-        </footer>
+            <br><br>
+        
+        {% block content %}{% endblock content %}
+        </div>
 
-        <script src="{% static 'js/script.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </body>
 </html>
