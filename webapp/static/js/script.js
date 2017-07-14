@@ -1,3 +1,4 @@
+/* global $ */
 $(document).ready(function() {
     
     // disables submit button until text is typed
@@ -72,19 +73,19 @@ $(document).ready(function() {
     $('.submit-btn-cover').hover(function(){
         // on mouse enter
         if ($('#submit-btn').is(':disabled')) {
-            $('svg circle').css('stroke', '#e57373')
-            $('svg line').css('stroke', '#e57373')
+            $('svg circle').css('stroke', '#e57373');
+            $('svg line').css('stroke', '#e57373');
         } else {
-            $('#submit-btn').css('background', '#98ee99')
+            $('#submit-btn').css('background', '#98ee99');
         }
     }, function(){
         // on mouse leave
         if ($('#submit-btn').is(':disabled')) {
-            $('svg circle').css('stroke', 'rgb(160, 160, 160)')
-            $('svg line').css('stroke', 'rgb(160, 160, 160)')
+            $('svg circle').css('stroke', 'rgb(160, 160, 160)');
+            $('svg line').css('stroke', 'rgb(160, 160, 160)');
             $('#submit-btn').css('background', 'none');
         } else {
-            $('#submit-btn').css('background', '#66bb6a')
+            $('#submit-btn').css('background', '#66bb6a');
         }
     });
     
@@ -107,11 +108,6 @@ $(document).ready(function() {
                 </div>
             </div>
         </li>`;
-    $('#add-btn').hover(function() {
-        // $('#add-btn svg').css('stroke', '#00701a');
-    }, function() {
-        $('#add-btn svg').css('stroke', 'white');
-    });
     
     $('#add-btn').click(function() {
         event.preventDefault();
@@ -121,6 +117,9 @@ $(document).ready(function() {
         } else if ($('#compare-search-bars li').length == 9) {
             $('#compare-search-bars').append(newSearchBar);
             $('#add-btn').hide();
+        }
+        if ($('#compare-search-bars li').length == 4) {
+            $('#warning').css('display', 'flex');
         }
     });
     
@@ -143,7 +142,7 @@ $(document).ready(function() {
     
     function setCompareButton() {
         var emptyBox = false;
-        $('#compare-search-bars > li').each(function(){
+        $('#compare-search-bars > li').each(function() {
             var query = $(this).find('#query').val();
             if (!($.trim(query))) {
                 emptyBox = true;
@@ -158,5 +157,62 @@ $(document).ready(function() {
     $('#compare-search-bars').keyup(function(event) {
         setCompareButton();
     });
+    
+    $('#warning').hide();
+    $('#warning').click(function() {
+        $('#warning').remove();
+    });
+    
+    if (window.location.pathname == "/trending") {
+        $.ajax({
+            url: "/trending",
+            data: {"start": 0},
+            dataType: "json",
+            success: function(response) {
+                // console.log(response);
+                $('.loader').hide();
+                for (var i = 0; i < 5; i++) {
+                    var currentName = response.results[i].name;
+                    var currentGroup = $('.results-group').find($('.unanalyzed:contains('+currentName+')'));
+                    currentGroup.find('.statement').text(response.results[i].statement);
+                    currentGroup.find('.analysis').text(response.results[i].analysis);
+                    currentGroup.removeClass('unanalyzed');
+                }
+                $('#trend-btn').show();
+            },
+            error: function(xhr,errmsg,err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    }
+    var startingIndex = 5;
+    $('#trend-btn').click(function() {
+        $('#trend-btn').hide();
+        $('.loader').show();
+        $.ajax({
+            url: "/trending",
+            data: {"start": startingIndex},
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
+                startingIndex += 5;
+                $('.loader').hide();
+                for (var i = 0; i < 5; i++) {
+                    var currentName = response.results[i].name;
+                    var currentGroup = $('.results-group').find($('.unanalyzed:contains('+currentName+')'));
+                    currentGroup.find('.statement').text(response.results[i].statement);
+                    currentGroup.find('.analysis').text(response.results[i].analysis);
+                    currentGroup.removeClass('unanalyzed');
+                }
+                if (!response.complete) {
+                    $('#trend-btn').show();
+                }
+            },
+            error: function(xhr,errmsg,err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+
     
 });

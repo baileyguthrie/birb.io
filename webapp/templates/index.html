@@ -24,7 +24,7 @@
         <div class="col-md-8 col-md-offset-2">
             {% if query %}
                 <div class="results-well">
-                    <p>Searched for: {{ query }}</p>
+                    <h2>{{ query }}</h2>
                     <h3 class="results-statement">{{ statement }}</h3>
                     <h4 class="results-analysis">{{ analysis }}</h4>
                 </div>
@@ -39,5 +39,19 @@
             {% endif %}
         </div>
     </div>
-    
+    <div class="row">
+        <div class="col-md-offset-2">
+            {% if pos_tweet %}
+                <div class="col-md-5">
+                    {{ pos_tweet.html | safe }}
+                </div>
+            {% endif %}
+            {% if neg_tweet %}
+                <div class="col-md-5">
+                    {{ neg_tweet.html | safe }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+        
 {% endblock content %}

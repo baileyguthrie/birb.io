@@ -3,17 +3,20 @@ Show most positive and most negative tweets
 Divide user search into user and user mention sides
 
 * COMPARE
-Have compare screen show warning when 4 or more terms being compared
 Show animated bar graph comparing the scores of the terms
 
 * TRENDING
-Have results load 5 at a time, with additional loading through AJAX request with query string parameters
-Cache unsearched results either through hidden text fields
+
 
 * ETC
+Fix up info page with white background and add settings
 Night mode that remembers user preference either through HTML5 local storage or cookies
+Switch between list and card view
 Create twtitter bot that responds to peoples tweet requests for analyzation
+Animations especially on compare page
 
 
 * BUGS
-Padding on bottom of compare page
+Make focus have outline only when navigating with keyboard
+    https://stackoverflow.com/questions/18000090/no-outline-on-mouse-focus-but-still-have-outline-on-keyboard-focus
+Trending topics doesn't actually analyze every single on in html

@@ -3,11 +3,18 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 def analyze_tweets(tweet_list):
     neg, neu, pos, count = 0, 0, 0, 0
     analyzer = SentimentIntensityAnalyzer()
+    pos_tweet, neg_tweet = {'score': 0, 'id': 0}, {'score': 0, 'id': 0}
     for tweet in tweet_list: # Sum up all of the scores
         score = analyzer.polarity_scores(tweet.text)
         neg += score['neg']
         neu += score['neu']
         pos += score['pos']
+        if score['neg'] > neg_tweet['score']:
+            neg_tweet['score'] = score['neg']
+            neg_tweet['id'] = tweet.id
+        if score['pos'] > pos_tweet['score']:
+            pos_tweet['score'] = score['pos']
+            pos_tweet['id'] = tweet.id
         count += 1
     if count == 0:
         return {"error": "No matches were found for this phrase"}
@@ -37,7 +44,13 @@ def analyze_tweets(tweet_list):
     else:
         statement += "This is a neutral subject!"
     
-    return {"statement": statement, "analysis": analysis, "count": count}
+    return {
+        "statement": statement, 
+        "analysis": analysis, 
+        "count": count, 
+        "pos_tweet": pos_tweet, 
+        "neg_tweet": neg_tweet
+    }
     
 def isEnglish(s):
     try:
