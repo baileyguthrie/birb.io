@@ -1,5 +1,6 @@
 * SEARCH
 Divide user search into user and user mention sides
+Redo results page
 
 * COMPARE
 Show animated bar graph comparing the scores of the terms
