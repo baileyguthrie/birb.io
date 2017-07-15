@@ -27,16 +27,53 @@ $(document).ready(function() {
         $('#info').addClass('active-page');
     }
     
-    
     // colors the result well
-    $('.results-group .results-well').each(function() {
-        if ($(this).find('.results-statement:contains("Positive")').length || $(this).find('.results-statement:contains("Maximum Positivity")').length) {
-            $(this).addClass('positive-well');
-        } else if ($(this).find('.results-statement:contains("Negative")').length || $(this).find('.results-statement:contains("Maximum Negativity")').length) {
-            $(this).addClass('negative-well');
+    function colorCards() {
+        $('.results-group .result-container').each(function() {
+            var currentCard = $(this);
+            switch ($(this).find('.statement').text()) {
+                
+                case "Slightly Positive":
+                    currentCard.css('background', '#d7ffd9');
+                    break;
+                case "Positive":
+                    currentCard.css('background', '#c5fdc7');
+                    break;
+                case "Very Positive":
+                    currentCard.css('background', '#b2fab4');
+                    break;
+                case "Extremely Positive":
+                    currentCard.css('background', '#a5f4a7');
+                    break;
+                case "Maximum Positivity":
+                    currentCard.css('background', '98ee99');
+                    
+                case "Slightly Negative":
+                    currentCard.css('background', '#ffcccb');
+                    break;
+                case "Negative":
+                    currentCard.css('background', '#ffb8b7');
+                    break;
+                case "Very Negative":
+                    currentCard.css('background', '#ffa4a2');
+                    break;
+                case "Extremely Negative":
+                    currentCard.css('background', '#ff958f');
+                    break;
+                case "Maximum Negativity":
+                    currentCard.css('background', '#ff867c');
+                    break;
+            }
+        });
     }
-    });
-    
+    colorCards();
+    // $('.results-group .results-well').each(function() {
+    //     if ($(this).find('.results-statement:contains("Positive")').length || $(this).find('.results-statement:contains("Maximum Positivity")').length) {
+    //         $(this).addClass('positive-well');
+    //     } else if ($(this).find('.results-statement:contains("Negative")').length || $(this).find('.results-statement:contains("Maximum Negativity")').length) {
+    //         $(this).addClass('negative-well');
+    // }
+    // });
     
     // allows search icon color to be changed with css
 
@@ -177,8 +214,10 @@ $(document).ready(function() {
                     currentGroup.find('.statement').text(response.results[i].statement);
                     currentGroup.find('.analysis').text(response.results[i].analysis);
                     currentGroup.removeClass('unanalyzed');
+                    currentGroup.fadeIn('fast');
                 }
-                $('#trend-btn').show();
+                colorCards();
+                $('#trend-btn').fadeIn('fast');
             },
             error: function(xhr,errmsg,err) {
                 console.log(xhr.status + ": " + xhr.responseText);
@@ -203,10 +242,12 @@ $(document).ready(function() {
                     currentGroup.find('.statement').text(response.results[i].statement);
                     currentGroup.find('.analysis').text(response.results[i].analysis);
                     currentGroup.removeClass('unanalyzed');
+                    currentGroup.fadeIn('fast');
                 }
                 if (!response.complete) {
-                    $('#trend-btn').show();
+                    $('#trend-btn').fadeIn('fast');
                 }
+                colorCards()
             },
             error: function(xhr,errmsg,err) {
                 console.log(xhr.status + ": " + xhr.responseText);

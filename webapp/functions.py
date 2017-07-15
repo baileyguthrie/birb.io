@@ -28,19 +28,39 @@ def analyze_tweets(tweet_list):
     analysis = ""
     # Assign an analysis and statement
     if neg == 0:
-        statement += "Maximum Positivity!"
-        analysis += "There was no detected negativity!"
+        statement += "Maximum Positivity"
+        analysis += "No detected negativity"
     elif pos == 0:
-        statement += "Maximum Negativity..."
-        analysis += "There was no detected positivity..."
+        statement += "Maximum Negativity"
+        analysis += "No detected positivity"
     elif pos > neg:
         ratio = pos / neg
-        statement += "Positive! :)"
-        analysis += "The ratio of positivity to negativity is {0:.3f}".format(ratio)
+        if ratio < 2:
+            statement += "Slightly Positive"
+            analysis += "Score: {0:.3f}".format(ratio)
+        elif ratio < 5:
+            statement += "Positive"
+            analysis += "Score: {0:.3f}".format(ratio)
+        elif ratio < 10:
+            statement += "Very Positive"
+            analysis += "Score: {0:.3f}".format(ratio)
+        else:
+            statement += "Extremely Positive"
+            analysis += "Score: {0:.3f}".format(ratio)
     elif neg > pos:
         ratio = neg / pos
-        statement += "Negative... :("
-        analysis += "The ratio of negativity to positivity is {0:.3f}".format(ratio)
+        if ratio < 2:
+            statement += "Slightly Negative"
+            analysis += "Score: {0:.3f}".format(ratio)
+        elif ratio < 5:
+            statement += "Negative"
+            analysis += "Score: {0:.3f}".format(ratio)
+        elif ratio < 10:
+            statement += "Very Negative"
+            analysis += "Score: {0:.3f}".format(ratio)
+        else:
+            statement += "Extremely Negative"
+            analysis += "Score: {0:.3f}".format(ratio)
     else:
         statement += "This is a neutral subject!"
     

@@ -1,5 +1,4 @@
 * SEARCH
-Show most positive and most negative tweets
 Divide user search into user and user mention sides
 
 * COMPARE

@@ -274,6 +274,21 @@ body {
     padding: 12px 16px;
 }
 
+#info-well a {
+    color: #2196f3;
+    transition: color .15s ease-out;
+}
+
+#info-well a:hover {
+    text-decoration: none;
+    color: #6ec6ff;
+}
+
+#info-well a:focus {
+    text-decoration: none;
+    color: #0069c0;
+}
+
 /* trending styles */
 
 .results-group a {
@@ -284,7 +299,7 @@ body {
     display: none;
 }
 
-.trending-container {
+.result-container {
     margin-bottom: 20px;
     padding: 12px 16px;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -292,7 +307,7 @@ body {
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
-.trending-container .remove-margin {
+.result-container .remove-margin {
     margin: 0;
 }
 
@@ -300,9 +315,24 @@ body {
     float: right;
 }
 
-.trending-name {
+.result-name {
     font-size: 18px;
     font-weight: bold;
+}
+
+.result-container a {
+    color: #2196f3;
+    transition: color .15s ease-out;
+}
+
+.result-container a:hover {
+    text-decoration: none;
+    color: #6ec6ff;
+}
+
+.result-container a:focus {
+    text-decoration: none;
+    color: #0069c0;
 }
 
 #trend-btn {

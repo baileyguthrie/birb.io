@@ -21,15 +21,20 @@
 
     <br>
     <div class="row results-group">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-6 col-md-offset-3">
             {% if query %}
-                <div class="results-well">
-                    <h2>{{ query }}</h2>
-                    <h3 class="results-statement">{{ statement }}</h3>
-                    <h4 class="results-analysis">{{ analysis }}</h4>
+                <div class="result-container">
+                    <p>
+                        <span class="result-name">{{ query }}</span>
+                        <span class="right-side statement">{{ statement }}</span>    
+                    </p>
+                    <p class="remove-margin">
+                        &nbsp;
+                        <span class="right-side analysis">{{ analysis }}</span>
+                    </p>
                 </div>
             {% elif error %}
-                <div class="results-well">
+                <div class="result-container">
                     <h3>{{ error }}</h3>
                 </div>
             {% else %}
@@ -40,14 +45,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-offset-2">
+        <div class="col-md-offset-3">
             {% if pos_tweet %}
-                <div class="col-md-5">
+                <div class="col-md-4">
                     {{ pos_tweet.html | safe }}
                 </div>
             {% endif %}
             {% if neg_tweet %}
-                <div class="col-md-5">
+                <div class="col-md-4">
                     {{ neg_tweet.html | safe }}
                 </div>
             {% endif %}
