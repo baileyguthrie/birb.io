@@ -247,13 +247,73 @@ $(document).ready(function() {
                 if (!response.complete) {
                     $('#trend-btn').fadeIn('fast');
                 }
-                colorCards()
+                colorCards();
             },
             error: function(xhr,errmsg,err) {
                 console.log(xhr.status + ": " + xhr.responseText);
             }
         });
     });
-
     
+    function getTransparentColor(color) {
+        return color.replace('rgb', 'rgba').replace(')', ', 0.75)');
+    }
+    var compareStats = {
+        labels: [],
+        backgroundColors: [],
+        borderColors: [],
+        scores: []
+    };
+    $('.result-container').each(function() {
+        compareStats.labels.push($(this).find('.result-name').text());
+        var color = $(this).css('background-color');
+        compareStats.borderColors.push(color);
+        compareStats.backgroundColors.push(getTransparentColor(color));
+        
+        var analysis = $(this).find('.analysis').text();
+        var statement = $(this).find('.statement').text();
+        if (/Maximum/.test(statement)) {
+            var currentScore = 21.0;
+        } else {
+            var currentScore = parseFloat(/\d\.\d{3}/.exec(analysis), 10);
+        }
+        currentScore -= 1;
+        if (/neg/i.test(statement)) {
+            currentScore *= -1;
+        }
+        currentScore = currentScore.toFixed(3);
+        compareStats.scores.push(currentScore);
+    });
+    console.log(compareStats);
+    var ctx = $("#chart").get(0).getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: compareStats.labels,
+            datasets: [{
+                label: 'Adjusted Score',
+                data: compareStats.scores,
+                backgroundColor: compareStats.backgroundColors,
+                borderColor: compareStats.borderColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            legend: {
+                display: false
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Adjusted Score'
+                    },
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+
 });
