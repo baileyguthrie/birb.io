@@ -17,6 +17,7 @@ $(document).ready(function() {
         }
     });
    
+    // shows active page
     if (window.location.pathname == "/") {
         $('#search').addClass('active-page');
     } else if (window.location.pathname == "/compare") {
@@ -67,16 +68,8 @@ $(document).ready(function() {
         });
     }
     colorCards();
-    // $('.results-group .results-well').each(function() {
-    //     if ($(this).find('.results-statement:contains("Positive")').length || $(this).find('.results-statement:contains("Maximum Positivity")').length) {
-    //         $(this).addClass('positive-well');
-    //     } else if ($(this).find('.results-statement:contains("Negative")').length || $(this).find('.results-statement:contains("Maximum Negativity")').length) {
-    //         $(this).addClass('negative-well');
-    // }
-    // });
     
     // allows search icon color to be changed with css
-
     $('img.svg').each(function(){
         var $img = $(this);
         var imgID = $img.attr('id');
@@ -106,7 +99,7 @@ $(document).ready(function() {
 
     });
 
-        
+    // search bar submit scripts    
     $('.submit-btn-cover').hover(function(){
         // on mouse enter
         if ($('#submit-btn').is(':disabled')) {
@@ -147,7 +140,7 @@ $(document).ready(function() {
                 </div>
             </li>
         </div>`;
-    
+    // compare page add button scripts
     $('#add-btn').click(function() {
         event.preventDefault();
         $('#compare-btn').prop('disabled', true);
@@ -170,6 +163,7 @@ $(document).ready(function() {
         }
     });
     
+    // colors red x on compare bars
     $('ul').on({
         mouseenter: function() {
             $(this).find('line').css('stroke', '#ff6f60');
@@ -179,6 +173,7 @@ $(document).ready(function() {
         }
     }, '.close-btn');
     
+    // makes red x on compare bars functional
     $('ul').on('click', '.close-btn', function() {
         $(this).closest('li').remove();
         if ($('#compare-search-bars li').length == 9) {
@@ -187,6 +182,7 @@ $(document).ready(function() {
         setCompareButton();
     });
     
+    // enable or disable compare button
     function setCompareButton() {
         var emptyBox = false;
         $('#compare-search-bars > li').each(function() {
@@ -205,17 +201,22 @@ $(document).ready(function() {
         setCompareButton();
     });
     
+    // allow warning to be removed
     $('#warning').hide();
     $('#warning').click(function() {
         $('#warning').remove();
     });
     
-    $('#chart-info').click(function() {
+    // animations for chart information
+    $('#chart-info').on('click', function() {
+        if ($(':animated').length) {
+            return false;
+        }
         if ($('#chart-info').hasClass('minimized')) {
             $('#chart-info svg').animate({ opacity: 0 }, 150, "swing", function() {
                 $('#chart-info .svg').hide();
                 $('#chart-info').animate({ width: '100%' }, 150, "swing", function() {
-                    $('#chart-info').css('padding', '36px');
+                    $('#chart-info').css('padding', '12px 16px');
                     $('#chart-info').css('height', 'auto');
                     $('#chart-info-text').slideToggle(150, function() {
                         $('#chart-info-text').animate({ opacity: 100 }, 150);
@@ -238,6 +239,9 @@ $(document).ready(function() {
         }
     });
     
+    // trending scripts
+    
+    // initial ajax request for trending
     if (window.location.pathname == "/trending") {
         $.ajax({
             url: "/trending",
@@ -262,6 +266,7 @@ $(document).ready(function() {
             }
         });
     }
+    // ajax requests for button
     var startingIndex = 5;
     $('#trend-btn').click(function() {
         $('#trend-btn').hide();
@@ -293,6 +298,7 @@ $(document).ready(function() {
         });
     });
     
+    // gathers data for chart on compare page
     function getTransparentColor(color) {
         return color.replace('rgb', 'rgba').replace(')', ', 0.75)');
     }
