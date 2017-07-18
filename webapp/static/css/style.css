@@ -107,29 +107,29 @@ body {
     color: #0069c0 !important;
 }
 
-.results-well {
-    min-height: 20px;
-    padding: 19px;
-    margin-bottom: 20px;
-    background-color: #c1d5e0;
-    border: 1px solid #90a4ae;
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
-    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
-}
+/*.results-well {*/
+/*    min-height: 20px;*/
+/*    padding: 19px;*/
+/*    margin-bottom: 20px;*/
+/*    background-color: #c1d5e0;*/
+/*    border: 1px solid #90a4ae;*/
+/*    border-radius: 10px;*/
+/*    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);*/
+/*    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);*/
+/*    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);*/
+/*}*/
 
-.positive-well {
-    background-color: #b2fab4;
-    border-color: #81c784;
-    color: #003300;
-}
+/*.positive-well {*/
+/*    background-color: #b2fab4;*/
+/*    border-color: #81c784;*/
+/*    color: #003300;*/
+/*}*/
 
-.negative-well {
-    background-color: #ffa4a2;
-    border-color: #e57373;
-    color: #7f0000;
-}
+/*.negative-well {*/
+/*    background-color: #ffa4a2;*/
+/*    border-color: #e57373;*/
+/*    color: #7f0000;*/
+/*}*/
 
 .active-page {
     border-bottom: 1px solid #2196f3 !important;
@@ -238,6 +238,7 @@ body {
 }
 
 #warning {
+    display: flex;
     display: none;
     justify-content: space-between;
     align-items: center;
@@ -263,6 +264,37 @@ body {
 #warning:hover {
     background: #ffffa8;
     border-color: #fff176;
+}
+
+#chart-info {
+    background: #42a5f5;
+    height: 36px;
+    width: 36px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+    transition: padding .15s ease-out;
+}
+
+#chart-info:hover {
+    background: #6ec6ff;
+}
+
+#chart-info svg {
+    height: 32px;
+    width: 32px;
+    stroke: white;
+}
+
+/*#chart-info:hover svg {*/
+/*    display: none;*/
+/*}*/
+
+#chart-info-text {
+    display: none;
+    opacity: 0;
+    color: white;
+    /*transition: visibility .15s ease-out;*/
 }
 
 /* info styles */

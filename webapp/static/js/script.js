@@ -129,34 +129,44 @@ $(document).ready(function() {
     // compare page scripts
     
     var newSearchBar = `
-        <li>
-            <br>
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="search-row compare-query" id="#compare-row">
-                        <input id="query" type="text" name="query" autocomplete="off">
-                        <button class="close-btn" type="reset">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg close-icon replaced-svg">
-                                <line x1="18" y1="6" x2="6" y2="18" style="stroke: rgb(229, 57, 53);"></line>
-                                <line x1="6" y1="6" x2="18" y2="18" style="stroke: rgb(229, 57, 53);"></line>
-                            </svg>
-                        </button>
+        <div style="display: none" class="new-bar">
+            <li>
+                <br>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="search-row compare-query" id="#compare-row">
+                            <input id="query" type="text" name="query" autocomplete="off">
+                            <button class="close-btn" type="reset">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg close-icon replaced-svg">
+                                    <line x1="18" y1="6" x2="6" y2="18" style="stroke: rgb(229, 57, 53);"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18" style="stroke: rgb(229, 57, 53);"></line>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </li>`;
+            </li>
+        </div>`;
     
     $('#add-btn').click(function() {
         event.preventDefault();
         $('#compare-btn').prop('disabled', true);
         if ($('#compare-search-bars li').length < 9) {
             $('#compare-search-bars').append(newSearchBar);
+            $('#compare-search-bars').find(".new-bar:last").slideDown(150);
         } else if ($('#compare-search-bars li').length == 9) {
             $('#compare-search-bars').append(newSearchBar);
+            $('#compare-search-bars').find(".new-bar:last").slideDown(150);
             $('#add-btn').hide();
         }
         if ($('#compare-search-bars li').length == 4) {
-            $('#warning').css('display', 'flex');
+            $('#warning').slideDown({
+                start: function() {
+                    $('#warning').css('display', 'flex');
+                    $('#warning').css('max-height', '52px');
+                },
+                duration: 150
+            });
         }
     });
     
@@ -198,6 +208,34 @@ $(document).ready(function() {
     $('#warning').hide();
     $('#warning').click(function() {
         $('#warning').remove();
+    });
+    
+    $('#chart-info').click(function() {
+        if ($('#chart-info').hasClass('minimized')) {
+            $('#chart-info svg').animate({ opacity: 0 }, 150, "swing", function() {
+                $('#chart-info .svg').hide();
+                $('#chart-info').animate({ width: '100%' }, 150, "swing", function() {
+                    $('#chart-info').css('padding', '36px');
+                    $('#chart-info').css('height', 'auto');
+                    $('#chart-info-text').slideToggle(150, function() {
+                        $('#chart-info-text').animate({ opacity: 100 }, 150);
+                    });
+                });
+            });
+            $('#chart-info').toggleClass('minimized');
+        } else {
+            $('#chart-info-text').animate({ opacity: 0 }, 150, "swing", function() {
+                $('#chart-info').css('padding', '0');
+                $('#chart-info-text').slideToggle(150, function() {
+                    $('#chart-info').css('height', '36px');
+                    $('#chart-info').animate({width: '36px'}, 150, "swing", function() {
+                        $('#chart-info .svg').show();
+                        $('#chart-info .svg').animate({ opacity: 100 }, 150);
+                    });
+                });
+            });
+            $('#chart-info').toggleClass('minimized');
+        }
     });
     
     if (window.location.pathname == "/trending") {
@@ -258,62 +296,64 @@ $(document).ready(function() {
     function getTransparentColor(color) {
         return color.replace('rgb', 'rgba').replace(')', ', 0.75)');
     }
-    var compareStats = {
-        labels: [],
-        backgroundColors: [],
-        borderColors: [],
-        scores: []
-    };
-    $('.result-container').each(function() {
-        compareStats.labels.push($(this).find('.result-name').text());
-        var color = $(this).css('background-color');
-        compareStats.borderColors.push(color);
-        compareStats.backgroundColors.push(getTransparentColor(color));
-        
-        var analysis = $(this).find('.analysis').text();
-        var statement = $(this).find('.statement').text();
-        if (/Maximum/.test(statement)) {
-            var currentScore = 21.0;
-        } else {
-            var currentScore = parseFloat(/\d\.\d{3}/.exec(analysis), 10);
-        }
-        currentScore -= 1;
-        if (/neg/i.test(statement)) {
-            currentScore *= -1;
-        }
-        currentScore = currentScore.toFixed(3);
-        compareStats.scores.push(currentScore);
-    });
-    console.log(compareStats);
-    var ctx = $("#chart").get(0).getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: compareStats.labels,
-            datasets: [{
-                label: 'Adjusted Score',
-                data: compareStats.scores,
-                backgroundColor: compareStats.backgroundColors,
-                borderColor: compareStats.borderColors,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            legend: {
-                display: false
-            },
-            scales: {
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Adjusted Score'
-                    },
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
+    if ($('#chart').length) {
+        var compareStats = {
+            labels: [],
+            backgroundColors: [],
+            borderColors: [],
+            scores: []
+        };
+        $('.result-container').each(function() {
+            compareStats.labels.push($(this).find('.result-name').text());
+            var color = $(this).css('background-color');
+            compareStats.borderColors.push(color);
+            compareStats.backgroundColors.push(getTransparentColor(color));
+            
+            var analysis = $(this).find('.analysis').text();
+            var statement = $(this).find('.statement').text();
+            if (/Maximum/.test(statement)) {
+                var currentScore = 21.0;
+            } else {
+                var currentScore = parseFloat(/\d+\.\d{3}/.exec(analysis), 10);
             }
-        }
-    });
+            currentScore -= 1;
+            if (/neg/i.test(statement)) {
+                currentScore *= -1;
+            }
+            currentScore = currentScore.toFixed(3);
+            compareStats.scores.push(currentScore);
+        });
+        // console.log(compareStats);
+        var ctx = $('#chart').get(0).getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: compareStats.labels,
+                datasets: [{
+                    label: 'Adjusted Score',
+                    data: compareStats.scores,
+                    backgroundColor: compareStats.backgroundColors,
+                    borderColor: compareStats.borderColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Adjusted Score'
+                        },
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+    }
 
 });

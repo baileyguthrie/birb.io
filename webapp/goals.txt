@@ -1,17 +1,18 @@
 * SEARCH
 Divide user search into user and user mention sides
 Redo results page
+Make user search actually do what it should with
 
 * COMPARE
-Show animated bar graph comparing the scores of the terms
 
 * TRENDING
 
 
 * ETC
-Fix up info page with white background and add settings
+Have all cards clickable and link to search url
+Hide compare search bars when results are shown
+Make all cards clickable with link to search on twitter page
 Night mode that remembers user preference either through HTML5 local storage or cookies
-Switch between list and card view
 Create twtitter bot that responds to peoples tweet requests for analyzation
 Animations especially on compare page
 

@@ -79,6 +79,23 @@
                     <canvas id="chart" width="400px" height="400px"></canvas>
                 </div>
             </div>
+            <br><br>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="title-wrapper">
+                        <div id="chart-info" class="minimized">
+                            <img class="svg" src="{% static 'images/info.svg' %}">
+                            <span id="chart-info-text">
+                                Adjusted scores have 1 subtracted from them to normalize
+                                for the fact that these ratios must be 1 or greater
+                                to begin with. A placeholder score of 20 is given
+                                to terms where the score is maximal.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
         {% elif error %}
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
