@@ -1,14 +1,11 @@
 * SEARCH
-Redo results page
+Style results page
 
 * COMPARE
-Hide compare search bars when results are shown
 Allow comparison of user tweets
-Make color of bars darker
+(low priority) Make color of bars darker
 
 * TRENDING
-Add animations
-Fix color of names
 (low priority) Add graph
 
 * ETC
@@ -21,3 +18,4 @@ Create twtitter bot that responds to peoples tweet requests for analyzation
 Make focus have outline only when navigating with keyboard
     https://stackoverflow.com/questions/18000090/no-outline-on-mouse-focus-but-still-have-outline-on-keyboard-focus
 Trending topics doesn't actually analyze every single on in html
+Long usernames might overflow on mobile?

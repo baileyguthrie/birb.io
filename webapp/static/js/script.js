@@ -270,11 +270,11 @@ $(document).ready(function() {
                     var currentGroup = $('.results-group').find($('.unanalyzed:contains('+currentName+')'));
                     currentGroup.find('.statement').text(response.results[i].statement);
                     currentGroup.find('.analysis').text(response.results[i].analysis);
+                    currentGroup.slideDown(400);
                     currentGroup.removeClass('unanalyzed');
-                    currentGroup.fadeIn('fast');
                 }
                 colorCards();
-                $('#trend-btn').fadeIn('fast');
+                $('#trend-btn').slideDown(400);
             },
             error: function(xhr,errmsg,err) {
                 console.log(xhr.status + ": " + xhr.responseText);
@@ -299,11 +299,11 @@ $(document).ready(function() {
                     var currentGroup = $('.results-group').find($('.unanalyzed:contains('+currentName+')'));
                     currentGroup.find('.statement').text(response.results[i].statement);
                     currentGroup.find('.analysis').text(response.results[i].analysis);
+                    currentGroup.slideDown(400);
                     currentGroup.removeClass('unanalyzed');
-                    currentGroup.fadeIn('fast');
                 }
                 if (!response.complete) {
-                    $('#trend-btn').fadeIn('fast');
+                    $('#trend-btn').slideDown(400);
                 }
                 colorCards();
             },
