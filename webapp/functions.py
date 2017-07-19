@@ -67,7 +67,7 @@ def analyze_tweets(tweet_list):
     return {
         "statement": statement, 
         "analysis": analysis, 
-        "count": count, 
+        # "count": count, 
         "pos_tweet": pos_tweet, 
         "neg_tweet": neg_tweet
     }

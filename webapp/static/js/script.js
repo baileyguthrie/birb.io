@@ -276,7 +276,7 @@ $(document).ready(function() {
             data: {"start": startingIndex},
             dataType: "json",
             success: function(response) {
-                console.log(response);
+                // console.log(response);
                 startingIndex += 5;
                 $('.loader').hide();
                 for (var i = 0; i < 5; i++) {

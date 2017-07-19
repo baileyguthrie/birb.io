@@ -135,27 +135,73 @@ body {
     border-bottom: 1px solid #2196f3 !important;
 }
 
-.results-well > p > a {
-    color: #2196f3;
-    color: #388e3c;
-}
+/*.results-well > p > a {*/
+/*    color: #2196f3;*/
+/*    color: #388e3c;*/
+/*}*/
 
-.results-well > p > a:hover {
-    text-decoration: none;
-    color: #6ec6ff;
-    color: #6abf69;
-}
+/*.results-well > p > a:hover {*/
+/*    text-decoration: none;*/
+/*    color: #6ec6ff;*/
+/*    color: #6abf69;*/
+/*}*/
 
-.results-well > p > a:focus {
-    text-decoration: none;
-    color: #0069c0;
-    color: #00600f;
+/*.results-well > p > a:focus {*/
+/*    text-decoration: none;*/
+/*    color: #0069c0;*/
+/*    color: #00600f;*/
+/*}*/
+
+#profile-pic {
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+    margin-right: 10px;
 }
 
 @media screen and (max-width: 768px) {
     #title {
         font-size: 8em;
     }
+    
+    #profile-pic {
+        height: 100px;
+        width: 100px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .mobile {
+        display: none;
+    }
+    .desktop {
+        display: block;
+    }
+}
+
+
+@media screen and (max-width: 992px) {
+    .mobile {
+        display: block;
+    }
+    .desktop {
+        display: none;
+    }
+}
+
+.flex-center-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gradient-divider {
+    border: 0; 
+    height: 1px; 
+    background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
 }
 
 /*compare styles*/
@@ -353,18 +399,18 @@ body {
 }
 
 .result-container a {
-    color: #2196f3;
+    color: #1976d2;
     transition: color .15s ease-out;
 }
 
 .result-container a:hover {
     text-decoration: none;
-    color: #6ec6ff;
+    color: #63a4ff;
 }
 
 .result-container a:focus {
     text-decoration: none;
-    color: #0069c0;
+    color: #004ba0;
 }
 
 #trend-btn {

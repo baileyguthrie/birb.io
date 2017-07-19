@@ -19,43 +19,167 @@
         </div>
     </div>
 
-    <br>
-    <div class="row results-group">
-        <div class="col-md-6 col-md-offset-3">
-            {% if query %}
-                <div class="result-container">
-                    <p>
-                        <span class="result-name">{{ query }}</span>
-                        <span class="right-side statement">{{ statement }}</span>    
-                    </p>
-                    <p class="remove-margin">
-                        &nbsp;
-                        <span class="right-side analysis">{{ analysis }}</span>
-                    </p>
+    <br><br>
+    {% if user_searched_for %}
+        <div class="desktop">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 flex-center-wrapper">
+                    <img id="profile-pic" src="{{ results.profile_pic }}">
+                    <h2>{{ results.name }}</h2>
                 </div>
-            {% elif error %}
-                <div class="result-container">
-                    <h3>{{ error }}</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-2">
+                    <h4>User tweets</h4>
                 </div>
-            {% else %}
-                <div class="title-wrapper">
-                    <p class="tagline">Find out what Twitter thinks about any phrase, hashtag, or user.</p>
+                <div class="col-md-4">
+                    <h4>User mentions</h4>
                 </div>
-            {% endif %}
+            </div>
+            <div class="row results-group">
+                <div class="col-md-4 col-md-offset-2">
+                    {% if results.user_error %}
+                        {{ results.user_error }}
+                    {% else %}
+                        <div class="result-container">
+                            <p><span class="statement">{{ results.user_statement }}</span></p>
+                            <p><span class="analysis">{{ results.user_analysis }}</span></p>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    {% if results.mentions_error %}
+                        {{ results.mentions_error }}
+                    {% else %}
+                        <div class="result-container">
+                            <p><span class="statement">{{ results.mentions_statement }}</span></p>
+                            <p><span class="analysis">{{ results.mentions_analysis }}</span></p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-2">
+                    {{ results.user_pos_tweet.html | safe }}
+                    <br>
+                    {{ results.user_neg_tweet.html | safe }}
+                </div>
+                <div class="col-md-4">
+                    {{ results.mentions_pos_tweet.html | safe }}
+                    <br>
+                    {{ results.mentions_neg_tweet.html | safe }}
+                </div>
+            </div>
         </div>
-    </div>
+        
+        <div class="mobile">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 flex-center-wrapper">
+                    <img id="profile-pic" src="{{ results.profile_pic }}">
+                    <h2>{{ results.name }}</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-2">
+                    <h4>User tweets</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="results-group">
+                        {% if results.user_error %}
+                            {{ results.user_error }}
+                        {% else %}
+                            <div class="result-container">
+                                <p><span class="statement">{{ results.user_statement }}</span></p>
+                                <p><span class="analysis">{{ results.user_analysis }}</span></p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    {{ results.user_pos_tweet.html | safe }}
+                    <br>
+                    {{ results.user_neg_tweet.html | safe }}
+                </div>
+            </div>
+            <hr class="gradient-divider">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h4>User mentions</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="results-group">
+                        {% if results.mentions_error %}
+                            {{ results.mentions_error }}
+                        {% else %}
+                            <div class="result-container">
+                                <p><span class="statement">{{ results.mentions_statement }}</span></p>
+                                <p><span class="analysis">{{ results.mentions_analysis }}</span></p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    {{ results.mentions_pos_tweet.html | safe }}
+                    <br>
+                    {{ results.mentions_neg_tweet.html | safe }}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row results-group">
+            <div class="col-md-6 col-md-offset-3">
+                {% if query %}
+                    <div class="result-container">
+                        <p>
+                            <span class="result-name">{{ query }}</span>
+                            <span class="right-side statement">{{ statement }}</span>    
+                        </p>
+                        <p class="remove-margin">
+                            &nbsp;
+                            <span class="right-side analysis">{{ analysis }}</span>
+                        </p>
+                    </div>
+                {% elif error %}
+                    <div class="result-container">
+                        <h3>{{ error }}</h3>
+                    </div>
+                {% else %}
+                    <div class="title-wrapper">
+                        <p class="tagline">Find out what Twitter thinks about any phrase, hashtag, or user.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-3">
+                {% if pos_tweet %}
+                    <div class="col-md-4">
+                        {{ pos_tweet.html | safe }}
+                    </div>
+                {% endif %}
+                {% if neg_tweet %}
+                    <div class="col-md-4">
+                        {{ neg_tweet.html | safe }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    
+    <!-- debugging for checking searches -->
     <div class="row">
-        <div class="col-md-offset-3">
-            {% if pos_tweet %}
-                <div class="col-md-4">
-                    {{ pos_tweet.html | safe }}
-                </div>
-            {% endif %}
-            {% if neg_tweet %}
-                <div class="col-md-4">
-                    {{ neg_tweet.html | safe }}
-                </div>
-            {% endif %}
+        <div class="col-md-8 col-md-offset-2">
+            {% for tweet in tweet_list %}
+                {{ tweet.html | safe }}
+            {% endfor %}
         </div>
     </div>
         

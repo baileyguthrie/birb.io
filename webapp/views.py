@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from keys import *
 import twitter
 import json
+import re
 from functions import *
 
 #from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -18,53 +19,113 @@ def index(request):
         query = request.GET.__getitem__("query")
     except KeyError:
         return render(request, 'index.html')
-    
-    user_searched_for = False
+
     number_of_searches = 200
+    results = {}
     
     if str(query)[0] == '@': # search for user
-        user_searched_for = True
+        results['name'] = query
         try:
             user_timeline = api.GetUserTimeline(screen_name = query, count = number_of_searches)
         except twitter.error.TwitterError as e:
             error = str(e)
             return render(request, 'index.html', { 'error': error })
+        try:
+            profile_pic = api.GetUser(screen_name = query).profile_image_url
+        except twitter.error.TwitterError as e:
+            error = str(e)
+            return render(request, 'index.html', { 'error': error })
+        profile_pic = re.sub(r'_normal', '', profile_pic) # gets high res image
         user_results = analyze_tweets(user_timeline)
         if 'error' in user_results:
-            return render(request, 'index.html', {'error': user_results['error'] })
-
+            results['user_error'] = user_results['error']
+        else:
+            user_pos_tweet = api.GetStatusOembed(status_id = user_results['pos_tweet']['id'])
+            user_neg_tweet = api.GetStatusOembed(status_id = user_results['neg_tweet']['id'])
+            results.update({
+                'profile_pic': profile_pic,
+                'user_statement': user_results['statement'],
+                'user_analysis': user_results['analysis'],
+                'user_pos_tweet': user_pos_tweet,
+                'user_neg_tweet': user_neg_tweet
+            })
+        
+        try:
+            search_results = api.GetSearch(term = query, count = number_of_searches)
+        except twitter.error.TwitterError as e:
+            error = str(e)
+            return render(request, 'index.html', { 'error': error })
+        mentions_results = analyze_tweets(search_results)
+        if 'error' in mentions_results:
+            results['mentions_error'] = mentions_results['error']
+        else:
+            mentions_pos_tweet = api.GetStatusOembed(status_id = mentions_results['pos_tweet']['id'])
+            mentions_neg_tweet = api.GetStatusOembed(status_id = mentions_results['neg_tweet']['id'])
+            results.update({
+                'mentions_statement': mentions_results['statement'],
+                'mentions_analysis': mentions_results['analysis'],
+                'mentions_pos_tweet': mentions_pos_tweet,
+                'mentions_neg_tweet': mentions_neg_tweet
+            })
+        
+        # for key, value in results.iteritems():
+        #     print "{}: {}".format(key, value)
+        # print results.user_statement
+        # print results.mentions_statement
+        # for result in search_results:
+        #     if result.user.screen_name == str(query)[1:]:
+        #         print "MATCH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        #     else:
+        #         print "no"
+        return render(request, 'index.html', { 'results': results, 'user_searched_for': True })
+    
     try:
         search_results = api.GetSearch(term = query, count = number_of_searches)
     except twitter.error.TwitterError as e:
         error = str(e)
         return render(request, 'index.html', { 'error': error })
+        
+        
+    # for result in search_results:
+    #     if result.user.screen_name == str(query)[1:]:
+    #         print "MATCH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    #     else:
+    #         print "no"
+    # tweet_list = []
+    # for i in range(1, 15):
+    #     tweet_list.append(api.GetStatusOembed(status_id = search_results[i].id))
+    # return render(request, 'index.html', {
+    #     'query': query,
+    #     'tweet_list': tweet_list
+    # })
+    
+        
     results = analyze_tweets(search_results)
     if 'error' in results:
         return render(request, 'index.html', { 'error': results['error'] })
     pos_tweet = api.GetStatusOembed(status_id = results['pos_tweet']['id'])
     neg_tweet = api.GetStatusOembed(status_id = results['neg_tweet']['id'])
-    print pos_tweet
-    print neg_tweet
     
-    if user_searched_for:
-        return render(request, 'index.html', {
-            'query': query,
-            'statement': results['statement'],
-            'user_statement': user_results['statement'],
-            'analysis': results['analysis'],
-            'user_analysis': user_results['analysis'],
-            'count': results['count'],
-            'user_count': user_results['count']
-        })
-    else:
-        return render(request, 'index.html', {
-            'query': query,
-            'statement': results['statement'],
-            'analysis': results['analysis'],
-            'count': results['count'],
-            'pos_tweet': pos_tweet,
-            'neg_tweet': neg_tweet
-        })
+    # if user_searched_for:
+    #     return render(request, 'index.html', {
+    #         'query': query,
+    #         'statement': results['statement'],
+    #         'user_statement': user_results['statement'],
+    #         'analysis': results['analysis'],
+    #         'user_analysis': user_results['analysis'],
+    #         # 'count': results['count'],
+    #         # 'user_count': user_results['count']
+    #     })
+    # else:
+    return render(request, 'index.html', {
+        'query': query,
+        'statement': results['statement'],
+        'analysis': results['analysis'],
+        # 'count': results['count'],
+        'pos_tweet': pos_tweet,
+        'neg_tweet': neg_tweet,
+        'user_searched_for': False
+    })
     
 def trending(request):
     api = twitter.Api(consumer_key = ConsumerKey,
@@ -108,7 +169,6 @@ def trending(request):
             trend.update({
                 'statement': results['statement'], 
                 'analysis': results['analysis'], 
-                'count': results['count']
             })
         
         return HttpResponse(json.dumps({'results': trends[start:end]}), content_type="application/json")
@@ -138,7 +198,7 @@ def compare(request):
         results = analyze_tweets(search_results)
         if 'error' in results:
             return render(request, 'compare.html', { 'error': results['error'] })
-        comparison_results.append({'name': search_term, 'statement': results['statement'], 'analysis': results['analysis'], 'count': results['count']})
+        comparison_results.append({'name': search_term, 'statement': results['statement'], 'analysis': results['analysis'] })
     
     return render(request, 'compare.html', {'results': comparison_results})
     
