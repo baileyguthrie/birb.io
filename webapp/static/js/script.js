@@ -47,7 +47,8 @@ $(document).ready(function() {
                     currentCard.css('background', '#a5f4a7');
                     break;
                 case "Maximum Positivity":
-                    currentCard.css('background', '98ee99');
+                    currentCard.css('background', '#98ee99');
+                    break;
                     
                 case "Slightly Negative":
                     currentCard.css('background', '#ffcccb');
@@ -205,6 +206,20 @@ $(document).ready(function() {
     $('#warning').hide();
     $('#warning').click(function() {
         $('#warning').remove();
+    });
+    
+    // hides compare search bars when results are present
+    if ($('.results-group').length) {
+        $('.compare-form').hide();
+        $('.compare-show-btn').css('display', 'flex');
+    }
+    
+    // shows compare search bars
+    $('.compare-show-btn').click(function() {
+        $(this).slideUp(150, function() {
+            $(this).remove();
+        });
+        $('.compare-form').slideDown(150);
     });
     
     // animations for chart information

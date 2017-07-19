@@ -5,58 +5,69 @@
 {% endblock title %}
 {% block content %}
     
-    <form method="GET" action="/compare">
-        <ul class="list-unstyled" id="compare-search-bars">
-            <li>
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="search-row compare-query" id="#compare-row">
-                            <input id="query" type="text" autofocus="autofocus" name="query" autocomplete="off">
+    <div class="compare-form">
+        <form method="GET" action="/compare">
+            <ul class="list-unstyled" id="compare-search-bars">
+                <li>
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="search-row compare-query" id="#compare-row">
+                                <input id="query" type="text" autofocus="autofocus" name="query" autocomplete="off">
+                            </div>
                         </div>
                     </div>
+                </li>
+                <br>
+                <li>
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="search-row compare-query" id="#compare-row">
+                                <input id="query" type="text" name="query" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div id="warning">
+                        <img class="svg" src="{% static 'images/alert-triangle.svg' %}">
+                        <p>The more search terms added, the slower the search will be</p>
+                        <img class="svg" src="{% static 'images/alert-triangle.svg' %}">
+                    </div>
                 </div>
-            </li>
+            </div>
             <br>
-            <li>
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="search-row compare-query" id="#compare-row">
-                            <input id="query" type="text" name="query" autocomplete="off">
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div id="warning">
-                    <img class="svg" src="{% static 'images/alert-triangle.svg' %}">
-                    <p>The more search terms added, the slower the search will be</p>
-                    <img class="svg" src="{% static 'images/alert-triangle.svg' %}">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-5 title-wrapper">
+                    <button id="add-btn" type="button">
+                        <img id="add-icon" class="svg" src="{% static 'images/plus.svg' %}">
+                    </button>
                 </div>
             </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-2 col-md-offset-5 title-wrapper">
-                <button id="add-btn" type="button">
-                    <img id="add-icon" class="svg" src="{% static 'images/plus.svg' %}">
-                </button>
+            <br>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 title-wrapper">
+                    <button id="compare-btn" type="submit" disabled="true">
+                        compare
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="compare-show-btn">
+                <img class="svg" src="{% static 'images/chevron-down.svg' %}">
+                new comparison
+                <img class="svg" src="{% static 'images/chevron-down.svg' %}">
             </div>
         </div>
-        <br>
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4 title-wrapper">
-                <button id="compare-btn" type="submit" disabled="true">
-                    compare
-                </button>
-            </div>
-        </div>
-    </form>
+    </div>
     
     <br>
-    <div class="results-group">
-        {% if results %}
+    {% if results %}
+        <div class="results-group">
             {% for term in results %}
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
@@ -104,7 +115,7 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 {% endblock content %}
