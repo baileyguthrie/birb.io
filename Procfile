@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT django-workspace.wsgi:application
+web: gunicorn gettingstarted.wsgi --log-file -
