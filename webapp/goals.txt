@@ -1,21 +1,19 @@
 * SEARCH
-Style results page
+(low priority) Show 4 example tweets
 
 * COMPARE
-Allow comparison of user tweets
-(low priority) Make color of bars darker
+Mobile tooltip for user buttom
+(low priority) Make color of bars darker in light mode
 
 * TRENDING
 (low priority) Add graph
 
 * ETC
 Make all cards clickable with link to search on twitter page
-Night mode that remembers user preference either through HTML5 local storage or cookies
-Create twtitter bot that responds to peoples tweet requests for analyzation
+(low priority) Create twtitter bot that responds to peoples tweet requests for analyzation
 
 
 * BUGS
 Make focus have outline only when navigating with keyboard
     https://stackoverflow.com/questions/18000090/no-outline-on-mouse-focus-but-still-have-outline-on-keyboard-focus
 Trending topics doesn't actually analyze every single on in html
-Long usernames might overflow on mobile?

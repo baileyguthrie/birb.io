@@ -27,7 +27,10 @@ def analyze_tweets(tweet_list):
     statement = ""
     analysis = ""
     # Assign an analysis and statement
-    if neg == 0:
+    if neg == 0 and pos == 0:
+        statement += "Neutral"
+        analysis += "Score: 1.000"
+    elif neg == 0:
         statement += "Maximum Positivity"
         analysis += "No detected negativity"
     elif pos == 0:
@@ -67,7 +70,7 @@ def analyze_tweets(tweet_list):
     return {
         "statement": statement, 
         "analysis": analysis, 
-        # "count": count, 
+        # "count": count, # for debugging
         "pos_tweet": pos_tweet, 
         "neg_tweet": neg_tweet
     }

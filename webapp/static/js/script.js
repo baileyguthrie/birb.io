@@ -3,7 +3,7 @@ $(document).ready(function() {
     
     // disables submit button until text is typed
     $('#search-row').keyup(function(event) {
-        var query = $('#query').val();
+        var query = $('.query').val();
         if ($.trim(query)) {
             $('#submit-btn').removeAttr('disabled');
             $('svg circle').css('stroke', 'white');
@@ -28,12 +28,63 @@ $(document).ready(function() {
         $('#info').addClass('active-page');
     }
     
+    // night mode enablers
+    $('#night-check').change(function() {
+        console.log("change");
+        if (this.checked) {
+            enableNightMode();
+        } else {
+            disableNightMode();
+        }
+    });
+    if (localStorage.getItem('nightmode') == 'true') {
+        enableNightMode();
+        $('#night-check').prop('checked', true);
+    }
+    function enableNightMode() {
+        localStorage.setItem('nightmode', 'true');
+        $('html').addClass('night-mode');
+        $('body').addClass('night-mode');
+        $('#info-well').css({
+            'background': '#303030',
+            'color': 'white' 
+        });
+        $('.night-well').css({
+            'background': '#303030',
+            'color': 'white' 
+        });
+        $('.query').addClass('night-bar');
+        $('.night-text').css('color', 'white');
+    }
+    function disableNightMode() {
+        localStorage.setItem('nightmode', 'false');
+        $('html').removeClass('night-mode');
+        $('body').removeClass('night-mode');
+        $('#info-well').css({
+            'background': 'white',
+            'color': '#333' 
+        });
+        $('.night-well').css({
+            'background': 'white',
+            'color': '#333' 
+        });
+    }
+    
     // colors the result well
     function colorCards() {
         $('.results-group .result-container').each(function() {
             var currentCard = $(this);
             switch ($(this).find('.statement').text()) {
                 
+                case "Neutral":
+                    if (localStorage.getItem('nightmode') == 'true') {
+                        currentCard.css({
+                            'background': '#303030',
+                            'color': 'white'
+                        });
+                    }
+                    break;
+                    
                 case "Slightly Positive":
                     currentCard.css('background', '#d7ffd9');
                     break;
@@ -129,7 +180,13 @@ $(document).ready(function() {
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
                         <div class="search-row compare-query" id="#compare-row">
-                            <input id="query" type="text" name="query" autocomplete="off">
+                            <input class="query" type="text" name="query" autocomplete="off">
+                            <button class="user-btn user-btn-disabled user-btn-extra" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg replaced-svg">
+                                    <path class="draw" d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle class="draw" cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </button>
                             <button class="close-btn" type="reset">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg close-icon replaced-svg">
                                     <line x1="18" y1="6" x2="6" y2="18" style="stroke: rgb(229, 57, 53);"></line>
@@ -147,6 +204,9 @@ $(document).ready(function() {
         $('#compare-btn').prop('disabled', true);
         if ($('#compare-search-bars li').length < 9) {
             $('#compare-search-bars').append(newSearchBar);
+            if (localStorage.getItem('nightmode') == 'true') {
+                $('#compare-search-bars').find('.new-bar:last .query').addClass('night-bar');
+            }
             $('#compare-search-bars').find(".new-bar:last").slideDown(150);
         } else if ($('#compare-search-bars li').length == 9) {
             $('#compare-search-bars').append(newSearchBar);
@@ -183,13 +243,39 @@ $(document).ready(function() {
         setCompareButton();
     });
     
+    // enables tooltips
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip(); 
+    });
+    
+    // user button scripts
+    $('ul').on('click', '.user-btn', function() {
+        if ($(this).hasClass('user-btn-disabled')) {
+            $(this).removeClass('user-btn-disabled');
+            $(this).addClass('user-btn-enabled');
+            $(this).prop('title', "Will search through user's tweets");
+            $(this).siblings($('.query')).prop('name', 'user-query');
+        } else {
+            $(this).removeClass('user-btn-enabled');
+            $(this).addClass('user-btn-disabled');
+            $(this).prop('title', "Will search through mentions of and replies to user");
+            $(this).siblings($('.query')).prop('name', 'query');
+        }
+    });
+    
     // enable or disable compare button
     function setCompareButton() {
         var emptyBox = false;
-        $('#compare-search-bars > li').each(function() {
-            var query = $(this).find('#query').val();
+        $('#compare-search-bars li').each(function() {
+            var currentList = $(this);
+            var query = $(this).find('.query').val();
             if (!($.trim(query))) {
                 emptyBox = true;
+                userOption(currentList, false);
+            } else if ($.trim(query)[0] == '@') {
+                userOption(currentList, true);
+            } else {
+                userOption(currentList, false);
             }
         });
         if (emptyBox) {
@@ -201,6 +287,22 @@ $(document).ready(function() {
     $('#compare-search-bars').keyup(function(event) {
         setCompareButton();
     });
+    
+    // show or destroy user button
+    function userOption(currentList, create) {
+        if (create) {
+            currentList.find('.user-btn').show();
+            if (currentList.parent().hasClass('new-bar')) {
+                currentList.find('.query').addClass('extra-padding');
+            }
+        } else { // destroy
+            currentList.find('.user-btn').hide();
+            currentList.find('.query').prop('name', 'query');
+            if (currentList.parent().hasClass('new-bar')) {
+                currentList.find('.query').removeClass('extra-padding');
+            }
+        }
+    }
     
     // allow warning to be removed
     $('#warning').hide();
@@ -345,7 +447,31 @@ $(document).ready(function() {
             compareStats.scores.push(currentScore);
         });
         // console.log(compareStats);
+        Chart.pluginService.register({
+            beforeDraw: function (chart, easing) {
+                if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
+                    var helpers = Chart.helpers;
+                    var ctx = chart.chart.ctx;
+                    var chartArea = chart.chartArea;
+        
+                    ctx.save();
+                    ctx.fillStyle = chart.config.options.chartArea.backgroundColor;
+                    ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+                    ctx.restore();
+                }
+            }
+        });
         var ctx = $('#chart').get(0).getContext('2d');
+        if (localStorage.getItem('nightmode') == 'true') {
+            Chart.defaults.global.defaultFontColor = 'white';
+            var gridColor = 'rgba(255,255,255,0.1)';
+            var zeroColor = 'rgba(255,255,255,0.25)';
+            var backgroundColor = '#303030';
+        } else {
+            var gridColor = 'rgba(0,0,0,0.1)';
+            var zeroColor = 'rgba(0,0,0,0.25)';
+            var backgroundColor = 'white';
+        }
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -359,6 +485,9 @@ $(document).ready(function() {
                 }]
             },
             options: {
+                chartArea: {
+                    backgroundColor: backgroundColor
+                },
                 legend: {
                     display: false
                 },
@@ -370,6 +499,16 @@ $(document).ready(function() {
                         },
                         ticks: {
                             beginAtZero:true
+                        },
+                        gridLines: {
+                            color: gridColor,
+                            zeroLineColor: zeroColor
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            color: gridColor,
+                            zeroLineColor: zeroColor
                         }
                     }]
                 }
