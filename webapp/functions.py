@@ -27,7 +27,7 @@ def analyze_tweets(tweet_list):
     statement = ""
     analysis = ""
     # Assign an analysis and statement
-    if neg == 0 and pos == 0:
+    if neg == pos:
         statement += "Neutral"
         analysis += "Score: 1.000"
     elif neg == 0:
