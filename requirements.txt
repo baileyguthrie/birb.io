@@ -16,5 +16,6 @@ requests==2.18.1
 requests-oauthlib==0.8.0
 static3==0.7.0
 urllib3==1.21.1
+vaderSentiment==2.5
 whitenoise==3.3.0
 wsgiref==0.1.2
