@@ -53,6 +53,10 @@ $(document).ready(function() {
             'background': '#303030',
             'color': 'white' 
         });
+        $('.error-well').css({
+            'background': '#303030',
+            'color': 'white'
+        });
         $('.query').addClass('night-bar');
         $('.night-text').css('color', 'white');
     }

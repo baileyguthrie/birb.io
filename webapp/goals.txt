@@ -1,5 +1,5 @@
 * SEARCH
-(low priority) Show 4 example tweets
+(low priority) Show 4 example tweets on normal search
 
 * COMPARE
 Mobile tooltip for user buttom

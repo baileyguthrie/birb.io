@@ -20,114 +20,40 @@
     </div>
 
     <br><br>
-    {% if user_searched_for %}
-        <div class="desktop">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3 flex-center-wrapper">
-                    <img id="profile-pic" src="{{ results.profile_pic }}">
-                    <h2 class="user-name night-text">
-                        <a href="https://twitter.com/{{ results.link_name}}" target="_blank">{{ results.name }}</a>
-                    </h2>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4 col-md-offset-2 title-wrapper">
-                    <h4 class="user-column-title night-text">User Tweets</h4>
-                </div>
-                <div class="col-md-4 title-wrapper">
-                    <h4 class="user-column-title night-text">User Mentions/Replies</h4>
-                </div>
-            </div>
-            <div class="row results-group">
-                <div class="col-md-4 col-md-offset-2">
-                    {% if results.user_error %}
-                        <div class="night-well">
-                            {{ results.user_error }}
-                        </div>
-                    {% else %}
-                        <div class="result-container result-flex-display">
-                            <span class="statement">{{ results.user_statement }}</span>
-                            <span class="analysis">{{ results.user_analysis }}</span>
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="col-md-4">
-                    {% if results.mentions_error %}
-                    <div class="night-well">
-                        {{ results.mentions_error }}
-                    </div>
-                    {% else %}
-                        <div class="result-container result-flex-display">
-                            <span class="statement">{{ results.mentions_statement }}</span>
-                            <span class="analysis">{{ results.mentions_analysis }}</span>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4 col-md-offset-2">
-                    {% if results.no_pos_tweets %}
-                        <div class="night-well">
-                            {{ results.no_pos_tweets }}
-                        </div>
-                    {% else %}
-                        <div class="title-wrapper night-text tweet-title">Most positive tweet</div>
-                        {{ results.user_pos_tweet.html | safe }}
-                    {% endif %}
-                    <br>
-                    {% if results.no_neg_tweets %}
-                        <div class="night-well">
-                            {{ results.no_neg_tweets }}
-                        </div>
-                    {% else %}
-                        <div class="title-wrapper night-text tweet-title">Most negative tweet</div>
-                        {{ results.user_neg_tweet.html | safe }}
-                    {% endif %}
-                </div>
-                <div class="col-md-4">
-                    {% if results.no_pos_mentions %}
-                        <div class="night-well">
-                            {{ results.no_pos_mentions }}
-                        </div>
-                    {% else %}
-                        <div class="title-wrapper night-text tweet-title">Most positive tweet</div>
-                        {{ results.mentions_pos_tweet.html | safe }}
-                    {% endif %}
-                    <br>
-                    {% if results.no_neg_mentions %}
-                        <div class="night-well">
-                            {{ results.no_neg_mentions }}
-                        </div>
-                    {% else %}
-                        <div class="title-wrapper night-text tweet-title">Most negative tweet</div>
-                        {{ results.mentions_neg_tweet.html | safe }}
-                    {% endif %}
+    {% if error %}
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="error-well">
+                    {{ error }}
                 </div>
             </div>
         </div>
-        
-        <div class="mobile">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3 flex-center-wrapper">
-                    <img id="profile-pic" src="{{ results.profile_pic }}">
-                    <h2 class="user-name night-text">
-                        <a href="https://twitter.com/{{ results.link_name}}" target="_blank">{{ results.name }}</a>
-                    </h2>
+    {% elif results %}
+        {% if user_searched_for %}
+            <div class="desktop">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 flex-center-wrapper">
+                        <img id="profile-pic" src="{{ results.profile_pic }}">
+                        <h2 class="user-name night-text">
+                            <a href="https://twitter.com/{{ results.link_name}}" target="_blank">{{ results.name }}</a>
+                        </h2>
+                    </div>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4 col-md-offset-2 title-wrapper">
-                    <h4 class="user-column-title night-text">User Tweets</h4>
+                <br>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-2 title-wrapper">
+                        <h4 class="user-column-title night-text">User Tweets</h4>
+                    </div>
+                    <div class="col-md-4 title-wrapper">
+                        <h4 class="user-column-title night-text">User Mentions/Replies</h4>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <div class="results-group">
+                <div class="row results-group">
+                    <div class="col-md-4 col-md-offset-2">
                         {% if results.user_error %}
-                            {{ results.user_error }}
+                            <div class="night-well">
+                                {{ results.user_error }}
+                            </div>
                         {% else %}
                             <div class="result-container result-flex-display">
                                 <span class="statement">{{ results.user_statement }}</span>
@@ -135,40 +61,11 @@
                             </div>
                         {% endif %}
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    {% if results.no_pos_tweets %}
-                        <div class="night-well">
-                            {{ results.no_pos_tweets }}
-                        </div>
-                    {% else %}
-                        <div class="title-wrapper night-text tweet-title">Most positive tweet</div>
-                        {{ results.user_pos_tweet.html | safe }}
-                    {% endif %}
-                    <br>
-                    {% if results.no_neg_tweets %}
-                        <div class="night-well">
-                            {{ results.no_neg_tweets }}
-                        </div>
-                    {% else %}
-                        <div class="title-wrapper night-text tweet-title">Most negative tweet</div>
-                        {{ results.user_neg_tweet.html | safe }}
-                    {% endif %}
-                </div>
-            </div>
-            <hr class="gradient-divider">
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2 title-wrapper">
-                    <h4 class="user-column-title night-text">User Mentions/Replies</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <div class="results-group">
+                    <div class="col-md-4">
                         {% if results.mentions_error %}
+                        <div class="night-well">
                             {{ results.mentions_error }}
+                        </div>
                         {% else %}
                             <div class="result-container result-flex-display">
                                 <span class="statement">{{ results.mentions_statement }}</span>
@@ -177,32 +74,144 @@
                         {% endif %}
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    {% if results.no_pos_mentions %}
-                        <div class="night-well">
-                            {{ results.no_pos_mentions }}
-                        </div>
-                    {% else %}
-                        <div class="title-wrapper night-text tweet-title">Most positive tweet</div>
-                        {{ results.mentions_pos_tweet.html | safe }}
-                    {% endif %}
-                    <br>
-                    {% if results.no_neg_mentions %}
-                        <div class="night-well">
-                            {{ results.no_neg_mentions }}
-                        </div>
-                    {% else %}
-                        <div class="title-wrapper night-text tweet-title">Most negative tweet</div>
-                        {{ results.mentions_neg_tweet.html | safe }}
-                    {% endif %}
+                <br>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-2">
+                        {% if results.no_pos_tweets %}
+                            <div class="night-well">
+                                {{ results.no_pos_tweets }}
+                            </div>
+                        {% else %}
+                            <div class="title-wrapper night-text tweet-title">Most positive tweet</div>
+                            {{ results.user_pos_tweet.html | safe }}
+                        {% endif %}
+                        <br>
+                        {% if results.no_neg_tweets %}
+                            <div class="night-well">
+                                {{ results.no_neg_tweets }}
+                            </div>
+                        {% else %}
+                            <div class="title-wrapper night-text tweet-title">Most negative tweet</div>
+                            {{ results.user_neg_tweet.html | safe }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        {% if results.no_pos_mentions %}
+                            <div class="night-well">
+                                {{ results.no_pos_mentions }}
+                            </div>
+                        {% else %}
+                            <div class="title-wrapper night-text tweet-title">Most positive tweet</div>
+                            {{ results.mentions_pos_tweet.html | safe }}
+                        {% endif %}
+                        <br>
+                        {% if results.no_neg_mentions %}
+                            <div class="night-well">
+                                {{ results.no_neg_mentions }}
+                            </div>
+                        {% else %}
+                            <div class="title-wrapper night-text tweet-title">Most negative tweet</div>
+                            {{ results.mentions_neg_tweet.html | safe }}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-        
-    {% else %} <!-- non user search -->
-        {% if results %}
+            
+            <div class="mobile">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 flex-center-wrapper">
+                        <img id="profile-pic" src="{{ results.profile_pic }}">
+                        <h2 class="user-name night-text">
+                            <a href="https://twitter.com/{{ results.link_name}}" target="_blank">{{ results.name }}</a>
+                        </h2>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-2 title-wrapper">
+                        <h4 class="user-column-title night-text">User Tweets</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="results-group">
+                            {% if results.user_error %}
+                                {{ results.user_error }}
+                            {% else %}
+                                <div class="result-container result-flex-display">
+                                    <span class="statement">{{ results.user_statement }}</span>
+                                    <span class="analysis">{{ results.user_analysis }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        {% if results.no_pos_tweets %}
+                            <div class="night-well">
+                                {{ results.no_pos_tweets }}
+                            </div>
+                        {% else %}
+                            <div class="title-wrapper night-text tweet-title">Most positive tweet</div>
+                            {{ results.user_pos_tweet.html | safe }}
+                        {% endif %}
+                        <br>
+                        {% if results.no_neg_tweets %}
+                            <div class="night-well">
+                                {{ results.no_neg_tweets }}
+                            </div>
+                        {% else %}
+                            <div class="title-wrapper night-text tweet-title">Most negative tweet</div>
+                            {{ results.user_neg_tweet.html | safe }}
+                        {% endif %}
+                    </div>
+                </div>
+                <hr class="gradient-divider">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 title-wrapper">
+                        <h4 class="user-column-title night-text">User Mentions/Replies</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="results-group">
+                            {% if results.mentions_error %}
+                                {{ results.mentions_error }}
+                            {% else %}
+                                <div class="result-container result-flex-display">
+                                    <span class="statement">{{ results.mentions_statement }}</span>
+                                    <span class="analysis">{{ results.mentions_analysis }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        {% if results.no_pos_mentions %}
+                            <div class="night-well">
+                                {{ results.no_pos_mentions }}
+                            </div>
+                        {% else %}
+                            <div class="title-wrapper night-text tweet-title">Most positive tweet</div>
+                            {{ results.mentions_pos_tweet.html | safe }}
+                        {% endif %}
+                        <br>
+                        {% if results.no_neg_mentions %}
+                            <div class="night-well">
+                                {{ results.no_neg_mentions }}
+                            </div>
+                        {% else %}
+                            <div class="title-wrapper night-text tweet-title">Most negative tweet</div>
+                            {{ results.mentions_neg_tweet.html | safe }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+        {% else %} <!-- non user search -->
+    
             <div class="row results-group">
                 <div class="col-md-4 col-md-offset-4">
                     {% if results.query %}
@@ -215,14 +224,6 @@
                                 <span class="statement">{{ results.statement }}</span>
                                 <span class="analysis">{{ results.analysis }}</span>
                             </div>
-                        </div>
-                    {% elif error %}
-                        <div class="night-well">
-                            <h3>{{ error }}</h3>
-                        </div>
-                    {% else %}
-                        <div class="title-wrapper">
-                            <p class="tagline">Find out what Twitter thinks about any phrase, hashtag, or user.</p>
                         </div>
                     {% endif %}
                 </div>
@@ -255,6 +256,10 @@
                 </div>
             </div>
         {% endif %}
+    {% else %}
+        <div class="title-wrapper">
+            <p class="tagline">Find out what Twitter thinks about any phrase, hashtag, or user.</p>
+        </div>
     {% endif %}
         
 {% endblock content %}

@@ -27,8 +27,7 @@ def index(request):
         try:
             user_timeline = api.GetUserTimeline(screen_name = query, count = number_of_searches)
         except twitter.error.TwitterError as e:
-            error = str(e)
-            return render(request, 'index.html', { 'error': error })
+            return render(request, 'index.html', { 'error': "No user with this name found:" })
         try:
             profile_pic = api.GetUser(screen_name = query).profile_image_url
         except twitter.error.TwitterError as e:
@@ -80,33 +79,34 @@ def index(request):
             })
 
         return render(request, 'index.html', { 'results': results, 'user_searched_for': True })
-    
-    try:
-        search_results = api.GetSearch(term = query, count = number_of_searches)
-    except twitter.error.TwitterError as e:
-        error = str(e)
-        return render(request, 'index.html', { 'error': error })
         
-    analysis_results = analyze_tweets(search_results)
-    if 'error' in analysis_results:
-        return render(request, 'index.html', { 'error': analysis_results['error'] })
-    if analysis_results['pos_tweet']['id'] != 0:
-        pos_tweet = api.GetStatusOembed(status_id = analysis_results['pos_tweet']['id'])
-        results.update({ 'pos_tweet': pos_tweet})
     else:
-        results.update({ 'no_pos_tweets': 'No positive tweets found' })
-    if analysis_results['neg_tweet']['id'] != 0:
-        neg_tweet = api.GetStatusOembed(status_id = analysis_results['neg_tweet']['id'])
-        results.update({ 'neg_tweet': neg_tweet})
-    else:
-        results.update({ 'no_neg_tweets': 'No negative tweets found' })
-    results.update({
-        'query': query,
-        'statement': analysis_results['statement'],
-        'analysis': analysis_results['analysis']
-    })
-    
-    return render(request, 'index.html', { 'results': results, 'user_searched_for': False })
+        try:
+            search_results = api.GetSearch(term = query, count = number_of_searches)
+        except twitter.error.TwitterError as e:
+            error = str(e)
+            return render(request, 'index.html', { 'error': error })
+            
+        analysis_results = analyze_tweets(search_results)
+        if 'error' in analysis_results:
+            return render(request, 'index.html', { 'error': analysis_results['error'] })
+        if analysis_results['pos_tweet']['id'] != 0:
+            pos_tweet = api.GetStatusOembed(status_id = analysis_results['pos_tweet']['id'])
+            results.update({ 'pos_tweet': pos_tweet})
+        else:
+            results.update({ 'no_pos_tweets': 'No positive tweets found' })
+        if analysis_results['neg_tweet']['id'] != 0:
+            neg_tweet = api.GetStatusOembed(status_id = analysis_results['neg_tweet']['id'])
+            results.update({ 'neg_tweet': neg_tweet})
+        else:
+            results.update({ 'no_neg_tweets': 'No negative tweets found' })
+        results.update({
+            'query': query,
+            'statement': analysis_results['statement'],
+            'analysis': analysis_results['analysis']
+        })
+        
+        return render(request, 'index.html', { 'results': results, 'user_searched_for': False })
     
 def trending(request):
     api = twitter.Api(consumer_key = ConsumerKey,
@@ -179,18 +179,17 @@ def compare(request):
             return render(request, 'compare.html', { 'error': error })
         results = analyze_tweets(search_results)
         if 'error' in results:
-            return render(request, 'compare.html', { 'error': results['error'] })
+            return render(request, 'compare.html', { 'error': results['error'] + ": " + search_term })
         comparison_results.append({'name': search_term, 'statement': results['statement'], 'analysis': results['analysis'] })
     
     for user in user_query:
         try:
             user_timeline = api.GetUserTimeline(screen_name = user, count = number_of_searches)
         except twitter.error.TwitterError as e:
-            error = str(e)
-            return render(request, 'compare.html', { 'error': error })
+            return render(request, 'compare.html', { 'error': "No user with this name found: " + user })
         user_results = analyze_tweets(user_timeline)
         if 'error' in user_results:
-            return render(request, 'compare.html', { 'error': user_results['error'] })
+            return render(request, 'compare.html', { 'error': "No user with this name found: " + user })
         comparison_results.append({
             'name': user + " (user)",
             'statement': user_results['statement'],
