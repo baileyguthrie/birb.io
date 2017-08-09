@@ -1,4 +1,0 @@
-ConsumerKey = "AvsL4b7yJEDRK66xzt6pVIqC4"
-ConsumerSecret = "smilhAzRedf8hYFouuS1rCobqlHZDZay0jegReEsw6u08GBq34"
-AccessTokenKey = "879716976876191744-YAJKz8mPFXKsXH0GmGH9qsNwzRMNN36"
-AccessTokenSecret = "oy4Bg42fytK62do2cWPxiiZBAY3q5JjqAUu2fjuUWA8gL"
